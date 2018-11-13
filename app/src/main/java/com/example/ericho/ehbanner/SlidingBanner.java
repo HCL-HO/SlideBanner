@@ -70,6 +70,8 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+        currentPage = position;
+
         View view = pageList.get(position);
         float scale = 1 - (positionOffset * RATIO_SCALE);
         scaleY(view, scale);
