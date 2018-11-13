@@ -11,6 +11,7 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
 
     private final List<View> viewList;
     private BannerAdapterEvent bannerAdapterEvent;
+    private float scaleY;
 
     public interface BannerAdapterEvent {
         void onItemClicked(int position);
@@ -39,7 +40,7 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View view = viewList.get(position);
-        view.setScaleY(1 - SlidingBanner.RATIO_SCALE);
+        view.setScaleY(1 - scaleY);
         container.addView(view);
         viewList.get(position).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,5 +54,10 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
     @Override
     public List<View> getViewList() {
         return viewList;
+    }
+
+    @Override
+    public void setScaleY(float y){
+        this.scaleY = y;
     }
 }

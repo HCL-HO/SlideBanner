@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        SlidingBanner slidingBanner = new SlidingBanner(bannerViewPager, bannerPagerAdapter);
+        SlidingBanner slidingBanner = new SlidingBanner(bannerViewPager, bannerPagerAdapter, 2000, 0.4f);
         bannerViewPager.setAdapter(bannerPagerAdapter);
         bannerViewPager = SlidingBanner.setUpPager(this, bannerViewPager);
         bannerViewPager.addOnPageChangeListener(slidingBanner);

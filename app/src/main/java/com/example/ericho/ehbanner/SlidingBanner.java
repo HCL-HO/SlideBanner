@@ -20,21 +20,35 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
     private List<View> pageList;
 
     private Handler handler;
-    public static float RATIO_SCALE = 0.2f;
+    private float RATIO_SCALE = 0.2f;
+    private long speed = 5000;
 
-    public interface BannerAdapterInteractor{
+    public interface BannerAdapterInteractor {
         List<View> getViewList();
+
+        void setScaleY(float y);
     }
 
     private void loopBanner() {
         viewPager.setCurrentItem(currentPage % pageList.size(), true);
-        handler.sendEmptyMessageDelayed(0, 5000);
+        handler.sendEmptyMessageDelayed(0, speed);
+    }
+
+    public SlidingBanner(ViewPager viewPager, BannerAdapterInteractor adapter, long speed, float sideRatio) {
+        this.viewPager = viewPager;
+        this.pageList = adapter.getViewList();
+        this.speed = speed;
+        this.RATIO_SCALE = sideRatio;
+        adapter.setScaleY(sideRatio);
+        initBanner();
+    }
+
+    public SlidingBanner(ViewPager viewPager, BannerAdapterInteractor adapter, long speed) {
+        this(viewPager, adapter, speed, 0.2f);
     }
 
     public SlidingBanner(ViewPager viewPager, BannerAdapterInteractor adapter) {
-        this.viewPager = viewPager;
-        this.pageList = adapter.getViewList();
-        initBanner();
+        this(viewPager, adapter, 5000);
     }
 
 
