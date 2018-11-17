@@ -17,37 +17,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         ViewPager bannerViewPager = findViewById(R.id.home_banner);
-        BannerAdapter bannerPagerAdapter = new BannerAdapter(getViews(), new BannerAdapter.BannerAdapterEvent() {
-            @Override
-            public void onItemClicked(int position) {
-
-            }
-        });
-        SlidingBanner slidingBanner = new SlidingBanner(bannerViewPager, bannerPagerAdapter, 2000, 0.4f);
-        bannerViewPager.setAdapter(bannerPagerAdapter);
-        bannerViewPager = SlidingBanner.setUpPager(this, bannerViewPager);
-        bannerViewPager.addOnPageChangeListener(slidingBanner);
-        bannerViewPager.setPageTransformer(false, slidingBanner);
         BannerIndicator indicator = findViewById(R.id.home_banner_indicator);
-        indicator.setupWithViewPager(bannerViewPager);
+
+        BannerDemo.setup(bannerViewPager, indicator, this);
     }
 
-    private List<View> getViews() {
-        List<View> views = new ArrayList<>();
-        addItem(R.color.colorAccent, views);
-        addItem(R.color.colorPrimary, views);
-        addItem(R.color.colorPrimaryDark, views);
-        addItem(R.color.white, views);
-        return views;
-    }
 
-    private void addItem(int colorAccent, List<View> views) {
-        ViewPager.LayoutParams params = new ViewPager.LayoutParams();
-        params.height = ViewPager.LayoutParams.MATCH_PARENT;
-        params.width = ViewPager.LayoutParams.MATCH_PARENT;
-        View v = new View(this);
-        v.setLayoutParams(params);
-        v.setBackgroundColor(getResources().getColor(colorAccent));
-        views.add(v);
-    }
 }
