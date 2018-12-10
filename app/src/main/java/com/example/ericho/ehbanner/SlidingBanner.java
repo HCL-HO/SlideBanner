@@ -17,29 +17,29 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
 
     private ViewPager viewPager;
     private int currentPage;
-    private List<View> pageList;
 
     private Handler handler;
     private float RATIO_SCALE = 0.2f;
-    private long speed = 5000;
+    private long speed = 2000;
 
     public interface BannerAdapterInteractor {
-        List<View> getViewList();
-
         void setScaleY(float y);
+
+        int getFakeCount();
     }
 
     private void loopBanner() {
-        viewPager.setCurrentItem(currentPage % pageList.size(), true);
+        viewPager.setCurrentItem(currentPage, true);
         handler.sendEmptyMessageDelayed(0, speed);
     }
 
+
     public SlidingBanner(ViewPager viewPager, BannerAdapterInteractor adapter, long speed, float sideRatio) {
         this.viewPager = viewPager;
-        this.pageList = adapter.getViewList();
         this.speed = speed;
         this.RATIO_SCALE = sideRatio;
         adapter.setScaleY(sideRatio);
+        currentPage = adapter.getFakeCount() / 2;
         initBanner();
     }
 
@@ -72,20 +72,24 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
 
         currentPage = position;
 
-        View view = pageList.get(position);
-        float scale = 1 - (positionOffset * RATIO_SCALE);
-        scaleY(view, scale);
-
-        if (position + 1 < viewPager.getAdapter().getCount()) {
-            view = pageList.get(position + 1);
-            scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
+        try {
+            View view = viewPager.findViewWithTag(position);
+            float scale = 1 - (positionOffset * RATIO_SCALE);
             scaleY(view, scale);
-        }
 
-        if (position > 0) {
-            view = pageList.get(position - 1);
-            scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
-            scaleY(view, scale);
+            if (position + 1 < viewPager.getAdapter().getCount()) {
+                view = viewPager.findViewWithTag(position + 1);
+                scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
+                scaleY(view, scale);
+            }
+
+            if (position > 0) {
+                view = viewPager.findViewWithTag(position - 1);
+                scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
+                scaleY(view, scale);
+            }
+        } catch (NullPointerException e) {
+
         }
     }
 
