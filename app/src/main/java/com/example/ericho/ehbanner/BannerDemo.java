@@ -17,7 +17,6 @@ public class BannerDemo {
         BannerAdapter bannerPagerAdapter = new BannerAdapter(new BannerAdapter.BannerAdapterEvent() {
             @Override
             public void onItemClicked(int position) {
-
             }
 
             @Override
