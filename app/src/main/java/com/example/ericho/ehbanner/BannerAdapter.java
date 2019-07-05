@@ -71,7 +71,7 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
 
     private View setupView(View view, final int position) {
         view.setScaleY(1 - scaleY);
-        view.setTag(position);
+        view.setTag(getRealPosition(position));
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
