@@ -60,9 +60,12 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
 
 
     private Object instantiateLoopingItem(ViewGroup container, int position) {
-        View view = bannerAdapterEvent.getView(container.getContext(), getRealPosition(position));
-        view = setupView(view, position);
-        container.addView(view);
+        int realPosition = getRealPosition(position);
+        View view = bannerAdapterEvent.getView(container.getContext(), realPosition);
+        view = setupView(view, realPosition);
+        if(container.findViewWithTag(realPosition)== null){
+             container.addView(view);
+        }
         return view;
     }
 
