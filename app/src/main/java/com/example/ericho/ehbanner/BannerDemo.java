@@ -28,7 +28,7 @@ public class BannerDemo {
             public int getRealCount() {
                 return 5;
             }
-        }, true);
+        });
         SlidingBanner slidingBanner = new SlidingBanner(bannerViewPager, bannerPagerAdapter, 2000, 0.4f);
         bannerViewPager.setAdapter(bannerPagerAdapter);
         bannerViewPager = SlidingBanner.setUpPager(context, bannerViewPager);
