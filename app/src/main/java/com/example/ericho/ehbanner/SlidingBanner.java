@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.eh.quotato.R;
+import com.example.ericho.ehbanner.R;
 import com.example.ericho.ehbanner.DisplayUtil;
 import com.example.ericho.ehbanner.SlidingBanner;
 
