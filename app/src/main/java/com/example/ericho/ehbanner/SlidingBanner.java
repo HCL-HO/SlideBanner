@@ -4,17 +4,17 @@ package com.example.ericho.ehbanner;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.BaseAdapter;
 
-import java.util.List;
+import com.eh.quotato.R;
+import com.example.ericho.ehbanner.DisplayUtil;
+import com.example.ericho.ehbanner.SlidingBanner;
 
 public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
 
+    private boolean auto;
     private ViewPager viewPager;
     private int currentPage;
 
@@ -34,33 +34,36 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
     }
 
 
-    public SlidingBanner(ViewPager viewPager, BannerAdapterInteractor adapter, long speed, float sideRatio) {
+    public SlidingBanner(ViewPager viewPager, SlidingBanner.BannerAdapterInteractor adapter, long speed, float sideRatio, boolean auto) {
         this.viewPager = viewPager;
         this.speed = speed;
         this.RATIO_SCALE = sideRatio;
+        this.auto = auto;
         adapter.setScaleY(sideRatio);
         currentPage = adapter.getFakeCount() / 2;
         initBanner();
     }
 
-    public SlidingBanner(ViewPager viewPager, BannerAdapterInteractor adapter, long speed) {
-        this(viewPager, adapter, speed, 0.2f);
+    public SlidingBanner(ViewPager viewPager, SlidingBanner.BannerAdapterInteractor adapter, long speed, boolean auto) {
+        this(viewPager, adapter, speed, 0.2f, auto);
     }
 
-    public SlidingBanner(ViewPager viewPager, BannerAdapterInteractor adapter) {
-        this(viewPager, adapter, 5000);
+    public SlidingBanner(ViewPager viewPager, SlidingBanner.BannerAdapterInteractor adapter, boolean auto) {
+        this(viewPager, adapter, 5000, auto);
     }
 
 
     private void initBanner() {
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                currentPage++;
-                loopBanner();
-            }
-        };
-        loopBanner();
+        if (auto) {
+            handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    currentPage++;
+                    loopBanner();
+                }
+            };
+            loopBanner();
+        }
     }
 
     @Override
@@ -116,6 +119,5 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
         bannerViewPager.setPageMargin(DisplayUtil.getPxByDp(context, DisplayUtil.getDpFromRes(context, R.dimen.frame_padding)));
         return bannerViewPager;
     }
-
 
 }
