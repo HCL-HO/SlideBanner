@@ -1,21 +1,18 @@
 package com.example.ericho.ehbanner;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import java.util.List;
+import com.example.ericho.ehbanner.BannerAdapter;
+import com.example.ericho.ehbanner.SlidingBanner;
 
 public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerAdapterInteractor {
 
     private boolean isLooping;
-    private BannerAdapterEvent bannerAdapterEvent;
+    private BannerAdapter.BannerAdapterEvent bannerAdapterEvent;
     private float scaleY;
 
     private int fakeCount = 1000000;
@@ -28,9 +25,8 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
         int getRealCount();
     }
 
-    public BannerAdapter(BannerAdapterEvent bannerAdapterEvent, boolean loop) {
+    public BannerAdapter(BannerAdapter.BannerAdapterEvent bannerAdapterEvent) {
         this.bannerAdapterEvent = bannerAdapterEvent;
-        this.isLooping = loop;
     }
 
     @Override
@@ -40,19 +36,15 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        if (isLooping) {
-            return instantiateLoopingItem(container, position);
-        } else {
-            return instantiateNormalItem(container, position);
-        }
+        return instantiateLoopingItem(container, position);
     }
 
-    private Object instantiateNormalItem(ViewGroup container, int position) {
-        View view = bannerAdapterEvent.getView(container.getContext(), getRealPosition(position));
-        view = setupView(view, position);
-        container.addView(view);
-        return view;
-    }
+//    private Object instantiateNormalItem(ViewGroup container, int position) {
+//        View view = bannerAdapterEvent.getView(container.getContext(), getRealPosition(position));
+//        view = setupView(view, position);
+//        container.addView(view);
+//        return view;
+//    }
 
     private int getRealPosition(int position) {
         return position % bannerAdapterEvent.getRealCount();
@@ -62,16 +54,17 @@ public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerA
     private Object instantiateLoopingItem(ViewGroup container, int position) {
         int realPosition = getRealPosition(position);
         View view = bannerAdapterEvent.getView(container.getContext(), realPosition);
-        if(container.findViewWithTag(realPosition)== null){
-             view = setupView(view, realPosition);
-             container.addView(view);
+        view = setupView(view, position);
+        if (view.getParent() == null) {
+//            Log.d("ME/BANNER", "ADD " + realPosition);
+            container.addView(view);
         }
         return view;
     }
 
     private View setupView(View view, final int position) {
         view.setScaleY(1 - scaleY);
-        view.setTag(getRealPosition(position));
+        view.setTag(position);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
