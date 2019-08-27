@@ -29,11 +29,11 @@ public class BannerDemo {
                 return 5;
             }
         });
-        SlidingBanner slidingBanner = new SlidingBanner(bannerViewPager, bannerPagerAdapter, 2000, 0.4f);
+        BannerSlider BannerSlider = new BannerSlider(bannerViewPager, bannerPagerAdapter, 2000, 0.4f, true);
         bannerViewPager.setAdapter(bannerPagerAdapter);
-        bannerViewPager = SlidingBanner.setUpPager(context, bannerViewPager);
-        bannerViewPager.addOnPageChangeListener(slidingBanner);
-        bannerViewPager.setPageTransformer(false, slidingBanner);
+        bannerViewPager = BannerSlider.setUpPager(context, bannerViewPager);
+        bannerViewPager.addOnPageChangeListener(BannerSlider);
+        bannerViewPager.setPageTransformer(false, BannerSlider);
         bannerIndicator.setupWithViewPager(bannerViewPager,5);
     }
 

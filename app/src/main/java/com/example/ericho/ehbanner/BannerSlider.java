@@ -10,9 +10,9 @@ import android.view.View;
 
 import com.example.ericho.ehbanner.R;
 import com.example.ericho.ehbanner.DisplayUtil;
-import com.example.ericho.ehbanner.SlidingBanner;
+import com.example.ericho.ehbanner.BannerSlider;
 
-public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
+public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
 
     private boolean auto;
     private ViewPager viewPager;
@@ -22,19 +22,13 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
     private float RATIO_SCALE = 0.2f;
     private long speed = 2000;
 
-    public interface BannerAdapterInteractor {
-        void setScaleY(float y);
-
-        int getFakeCount();
-    }
-
     private void loopBanner() {
         viewPager.setCurrentItem(currentPage, true);
         handler.sendEmptyMessageDelayed(0, speed);
     }
 
 
-    public SlidingBanner(ViewPager viewPager, SlidingBanner.BannerAdapterInteractor adapter, long speed, float sideRatio, boolean auto) {
+    public BannerSlider(ViewPager viewPager, BannerAdapterInteractor adapter, long speed, float sideRatio, boolean auto) {
         this.viewPager = viewPager;
         this.speed = speed;
         this.RATIO_SCALE = sideRatio;
@@ -44,11 +38,11 @@ public class SlidingBanner implements ViewPager.OnPageChangeListener, ViewPager.
         initBanner();
     }
 
-    public SlidingBanner(ViewPager viewPager, SlidingBanner.BannerAdapterInteractor adapter, long speed, boolean auto) {
+    public BannerSlider(ViewPager viewPager, BannerAdapterInteractor adapter, long speed, boolean auto) {
         this(viewPager, adapter, speed, 0.2f, auto);
     }
 
-    public SlidingBanner(ViewPager viewPager, SlidingBanner.BannerAdapterInteractor adapter, boolean auto) {
+    public BannerSlider(ViewPager viewPager, BannerAdapterInteractor adapter, boolean auto) {
         this(viewPager, adapter, 5000, auto);
     }
 

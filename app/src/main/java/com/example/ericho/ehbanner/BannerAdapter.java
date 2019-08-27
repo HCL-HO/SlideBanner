@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ericho.ehbanner.BannerAdapter;
-import com.example.ericho.ehbanner.SlidingBanner;
 
-public class BannerAdapter extends PagerAdapter implements SlidingBanner.BannerAdapterInteractor {
+public class BannerAdapter extends PagerAdapter implements BannerAdapterInteractor {
 
-    private boolean isLooping;
     private BannerAdapter.BannerAdapterEvent bannerAdapterEvent;
     private float scaleY;
 
