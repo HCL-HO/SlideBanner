@@ -2,20 +2,18 @@ package com.example.ericho.ehbanner;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.View;
-
-import com.example.ericho.ehbanner.R;
-import com.example.ericho.ehbanner.DisplayUtil;
-import com.example.ericho.ehbanner.BannerSlider;
+import android.view.WindowManager;
 
 public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
 
     private boolean auto;
-    private ViewPager viewPager;
+    private ViewPager bannerViewPager;
     private int currentPage;
 
     private Handler handler;
@@ -23,27 +21,24 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
     private long speed = 2000;
 
     private void loopBanner() {
-        viewPager.setCurrentItem(currentPage, true);
+        bannerViewPager.setCurrentItem(currentPage, true);
         handler.sendEmptyMessageDelayed(0, speed);
     }
 
 
-    public BannerSlider(ViewPager viewPager, BannerAdapterInteractor adapter, long speed, float sideRatio, boolean auto) {
-        this.viewPager = viewPager;
+    public BannerSlider(long speed, float sideRatio, boolean auto) {
+//        this.bannerViewPager = viewPager;
         this.speed = speed;
         this.RATIO_SCALE = sideRatio;
         this.auto = auto;
-        adapter.setScaleY(sideRatio);
-        currentPage = adapter.getFakeCount() / 2;
-        initBanner();
     }
 
-    public BannerSlider(ViewPager viewPager, BannerAdapterInteractor adapter, long speed, boolean auto) {
-        this(viewPager, adapter, speed, 0.2f, auto);
+    public BannerSlider(long speed, boolean auto) {
+        this(speed, 0.2f, auto);
     }
 
-    public BannerSlider(ViewPager viewPager, BannerAdapterInteractor adapter, boolean auto) {
-        this(viewPager, adapter, 5000, auto);
+    public BannerSlider(ViewPager viewPager, boolean auto) {
+        this(5000, auto);
     }
 
 
@@ -70,18 +65,18 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
         currentPage = position;
 
         try {
-            View view = viewPager.findViewWithTag(position);
+            View view = bannerViewPager.findViewWithTag(position);
             float scale = 1 - (positionOffset * RATIO_SCALE);
             scaleY(view, scale);
 
-            if (position + 1 < viewPager.getAdapter().getCount()) {
-                view = viewPager.findViewWithTag(position + 1);
+            if (position + 1 < bannerViewPager.getAdapter().getCount()) {
+                view = bannerViewPager.findViewWithTag(position + 1);
                 scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
                 scaleY(view, scale);
             }
 
             if (position > 0) {
-                view = viewPager.findViewWithTag(position - 1);
+                view = bannerViewPager.findViewWithTag(position - 1);
                 scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
                 scaleY(view, scale);
             }
@@ -103,15 +98,23 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
     }
 
 
-    public static ViewPager setUpPager(Activity context, ViewPager bannerViewPager) {
+    public void setUpPager(BannerViewPager bannerViewPager) {
+        this.bannerViewPager = bannerViewPager;
+        if (!(bannerViewPager.getAdapter() instanceof BannerAdapter)) {
+            throw new IllegalArgumentException("ViewPager must setup with Banner adapter");
+        }
+        BannerAdapter adapter = (BannerAdapter) bannerViewPager.getAdapter();
+        adapter.setScaleY(RATIO_SCALE);
+        currentPage = adapter.getFakeCount() / 2;
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        WindowManager windowManager = (WindowManager) bannerViewPager.getContext().getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         int padding = (int) Math.round(displayMetrics.widthPixels * 0.1);
         bannerViewPager.setOffscreenPageLimit(3);
         bannerViewPager.setClipToPadding(false);
         bannerViewPager.setPaddingRelative(padding, 0, padding, 0);
-        bannerViewPager.setPageMargin(DisplayUtil.getPxByDp(context, DisplayUtil.getDpFromRes(context, R.dimen.frame_padding)));
-        return bannerViewPager;
+        bannerViewPager.setPageMargin(DisplayUtil.getPxByDp(bannerViewPager.getContext(), DisplayUtil.getDpFromRes(bannerViewPager.getContext(), R.dimen.frame_padding)));
+        initBanner();
     }
 
 }

@@ -43,34 +43,8 @@ public class BannerIndicator extends RadioGroup {
         }
     }
 
-    public void setupWithViewPager(ViewPager bannerViewPager) {
-        int count = bannerViewPager.getAdapter().getCount();
-        for (int i = 0; i < count; i++) {
-            addButtons(i);
-        }
-        bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            int previous = 0;
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                selectButton(position);
-                refreshAfterSelect(position, previous);
-                previous = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
     public void setupWithViewPager(ViewPager bannerViewPager, final int realItemCount) {
+        removeAllViews();
         for (int i = 0; i < realItemCount; i++) {
             addButtons(i);
         }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class BannerDemo {
 
-    public static void setup(ViewPager bannerViewPager, BannerIndicator bannerIndicator, Activity context) {
+    public static void setup(BannerViewPager bannerViewPager, BannerIndicator bannerIndicator, Activity context) {
         BannerAdapter bannerPagerAdapter = new BannerAdapter(new BannerAdapter.BannerAdapterEvent() {
             @Override
             public void onItemClicked(int position) {
@@ -23,18 +23,11 @@ public class BannerDemo {
             public View getView(Context context, int count) {
                 return getTextView(context, count);
             }
+        }, 5);
 
-            @Override
-            public int getRealCount() {
-                return 5;
-            }
-        });
-        BannerSlider BannerSlider = new BannerSlider(bannerViewPager, bannerPagerAdapter, 2000, 0.4f, true);
-        bannerViewPager.setAdapter(bannerPagerAdapter);
-        bannerViewPager = BannerSlider.setUpPager(context, bannerViewPager);
-        bannerViewPager.addOnPageChangeListener(BannerSlider);
-        bannerViewPager.setPageTransformer(false, BannerSlider);
-        bannerIndicator.setupWithViewPager(bannerViewPager,5);
+        BannerSlider bannerSlider = new BannerSlider(2000, 0.4f, true);
+        bannerViewPager.setBannerAdapter(bannerPagerAdapter, bannerIndicator);
+        bannerViewPager.setBannerSlider(bannerSlider);
     }
 
     private static List<View> getViews(Context context) {

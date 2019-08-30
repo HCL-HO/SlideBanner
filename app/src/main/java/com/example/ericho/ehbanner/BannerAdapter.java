@@ -1,39 +1,41 @@
 package com.example.ericho.ehbanner;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ericho.ehbanner.BannerAdapter;
+import java.util.List;
+
 
 public class BannerAdapter extends PagerAdapter implements BannerAdapterInteractor {
 
     private BannerAdapter.BannerAdapterEvent bannerAdapterEvent;
     private float scaleY;
-
     private int fakeCount = 1000000;
+    private int size;
 
     public interface BannerAdapterEvent {
         void onItemClicked(int position);
 
         View getView(Context context, int count);
-
-        int getRealCount();
     }
 
-    public BannerAdapter(BannerAdapter.BannerAdapterEvent bannerAdapterEvent) {
+    BannerAdapter(BannerAdapter.BannerAdapterEvent bannerAdapterEvent, int size) {
         this.bannerAdapterEvent = bannerAdapterEvent;
+        this.size = size;
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         return instantiateLoopingItem(container, position);
     }
 
@@ -45,14 +47,14 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
 //    }
 
     private int getRealPosition(int position) {
-        return position % bannerAdapterEvent.getRealCount();
+        return position % size;
     }
 
 
     private Object instantiateLoopingItem(ViewGroup container, int position) {
         int realPosition = getRealPosition(position);
         View view = bannerAdapterEvent.getView(container.getContext(), realPosition);
-        view = setupView(view, position);
+        setupView(view, position);
         if (view.getParent() == null) {
 //            Log.d("ME/BANNER", "ADD " + realPosition);
             container.addView(view);
@@ -60,7 +62,7 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
         return view;
     }
 
-    private View setupView(View view, final int position) {
+    private void setupView(View view, final int position) {
         view.setScaleY(1 - scaleY);
         view.setTag(position);
         view.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +71,6 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
                 bannerAdapterEvent.onItemClicked(getRealPosition(position));
             }
         });
-        return view;
     }
 
     @Override
@@ -78,7 +79,7 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
 
@@ -91,5 +92,9 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
     @Override
     public int getFakeCount() {
         return fakeCount;
+    }
+
+    public int getRealCount() {
+        return size;
     }
 }

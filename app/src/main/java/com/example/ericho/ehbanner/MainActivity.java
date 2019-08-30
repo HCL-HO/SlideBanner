@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        ViewPager bannerViewPager = findViewById(R.id.home_banner);
+        BannerViewPager bannerViewPager = findViewById(R.id.home_banner);
         BannerIndicator indicator = findViewById(R.id.home_banner_indicator);
 
         BannerDemo.setup(bannerViewPager, indicator, this);
