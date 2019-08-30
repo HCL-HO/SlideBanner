@@ -14,7 +14,7 @@ import java.util.List;
 public class BannerDemo {
 
     public static void setup(BannerViewPager bannerViewPager, BannerIndicator bannerIndicator, Activity context) {
-        BannerAdapter bannerPagerAdapter = new BannerAdapter(new BannerAdapter.BannerAdapterEvent() {
+        BannerAdapter.BannerAdapterEvent bannerAdapterEvent = new BannerAdapter.BannerAdapterEvent() {
             @Override
             public void onItemClicked(int position) {
             }
@@ -23,10 +23,9 @@ public class BannerDemo {
             public View getView(Context context, int count) {
                 return getTextView(context, count);
             }
-        }, 5);
-
+        };
         BannerSlider bannerSlider = new BannerSlider(2000, 0.4f, true);
-        bannerViewPager.setBannerAdapter(bannerPagerAdapter, bannerIndicator);
+        bannerViewPager.setBannerComponent(bannerAdapterEvent, bannerIndicator, 5);
         bannerViewPager.setBannerSlider(bannerSlider);
     }
 
