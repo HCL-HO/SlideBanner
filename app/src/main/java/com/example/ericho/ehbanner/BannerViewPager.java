@@ -11,6 +11,7 @@ public class BannerViewPager extends ViewPager {
     private BannerAdapter bannerAdapter;
     private BannerIndicator bannerIndicator;
     private BannerAdapter.BannerAdapterEvent bannerAdapterEvent;
+    private BannerSlider bannerSlider;
 
     public BannerViewPager(@NonNull Context context) {
         super(context);
@@ -24,6 +25,7 @@ public class BannerViewPager extends ViewPager {
         addOnPageChangeListener(bannerSlider);
         setPageTransformer(false, bannerSlider);
         bannerSlider.setUpPager(this);
+        this.bannerSlider = bannerSlider;
     }
 
     public void setBannerComponent(BannerAdapter.BannerAdapterEvent bannerAdapterEvent, BannerIndicator bannerIndicator, int numOfItems) {
@@ -34,10 +36,21 @@ public class BannerViewPager extends ViewPager {
         bannerIndicator.setupWithViewPager(this, numOfItems);
     }
 
-    public void refresh(int numOfItems){
+    public void setBannerComponent(BannerAdapter.BannerAdapterEvent bannerAdapterEvent, BannerIndicator bannerIndicator) {
+        this.bannerAdapter = new BannerAdapter(bannerAdapterEvent, 1);
+        setAdapter(bannerAdapter);
+        this.bannerAdapterEvent = bannerAdapterEvent;
+        this.bannerIndicator = bannerIndicator;
+        bannerIndicator.setupWithViewPager(this, 1);
+    }
+
+    public void refresh(int numOfItems) {
+        clearOnPageChangeListeners();
+        removeAllViews();
+        setAdapter(bannerAdapter);
         bannerIndicator.removeAllViews();
         bannerIndicator.setupWithViewPager(this, numOfItems);
-        this.bannerAdapter = new BannerAdapter(bannerAdapterEvent, numOfItems);
-        setAdapter(bannerAdapter);
+        bannerAdapter = new BannerAdapter(bannerAdapterEvent, numOfItems);
+        setBannerSlider(bannerSlider);
     }
 }

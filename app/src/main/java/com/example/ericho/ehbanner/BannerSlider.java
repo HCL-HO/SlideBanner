@@ -7,22 +7,34 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
 
-    private boolean auto;
+    //OBJECTS
     private ViewPager bannerViewPager;
-    private int currentPage;
-
     private Handler handler;
+
+    //PARAMS
     private float RATIO_SCALE = 0.2f;
     private long speed = 2000;
+    private boolean auto;
+    private int currentPage;
+
+    //CONST
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            currentPage++;
+            loopBanner();
+        }
+    };
 
     private void loopBanner() {
         bannerViewPager.setCurrentItem(currentPage, true);
-        handler.sendEmptyMessageDelayed(0, speed);
+        handler.postDelayed(runnable, speed);
     }
 
 
@@ -44,14 +56,9 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
 
     private void initBanner() {
         if (auto) {
-            handler = new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    currentPage++;
-                    loopBanner();
-                }
-            };
-            loopBanner();
+            handler = new Handler();
+            handler.postDelayed(runnable, speed);
+//            loopBanner();
         }
     }
 
@@ -61,7 +68,6 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
         currentPage = position;
 
         try {
@@ -69,19 +75,24 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
             float scale = 1 - (positionOffset * RATIO_SCALE);
             scaleY(view, scale);
 
+            Log.d("Slider", "position " + position);
+
             if (position + 1 < bannerViewPager.getAdapter().getCount()) {
+                Log.d("Slider", "shrinking1 " + (position + 1));
                 view = bannerViewPager.findViewWithTag(position + 1);
                 scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
                 scaleY(view, scale);
             }
 
             if (position > 0) {
+                Log.d("Slider", "shrinking2 " + (position - 1));
                 view = bannerViewPager.findViewWithTag(position - 1);
                 scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
                 scaleY(view, scale);
             }
         } catch (NullPointerException e) {
-
+            Log.d("Slider", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -117,4 +128,12 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
         initBanner();
     }
 
+    public void stopLoop() {
+        handler.removeCallbacks(runnable);
+    }
+
+    public void startLoop() {
+        stopLoop();
+        handler.postDelayed(runnable, speed);
+    }
 }

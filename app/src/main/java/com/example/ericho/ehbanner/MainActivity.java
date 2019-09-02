@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         BannerViewPager bannerViewPager = findViewById(R.id.home_banner);
         BannerIndicator indicator = findViewById(R.id.home_banner_indicator);
 
-        BannerDemo.setup(bannerViewPager, indicator, this);
+        BannerDemo.setup(bannerViewPager, indicator);
     }
 
 

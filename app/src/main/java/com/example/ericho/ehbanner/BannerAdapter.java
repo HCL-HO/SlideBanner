@@ -23,6 +23,7 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
         View getView(Context context, int count);
     }
 
+
     BannerAdapter(BannerAdapter.BannerAdapterEvent bannerAdapterEvent, int size) {
         this.bannerAdapterEvent = bannerAdapterEvent;
         this.size = size;
@@ -63,6 +64,7 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
     }
 
     private void setupView(View view, final int position) {
+        Log.d("Slider", "scaling " + position);
         view.setScaleY(1 - scaleY);
         view.setTag(position);
         view.setOnClickListener(new View.OnClickListener() {

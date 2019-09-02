@@ -13,7 +13,7 @@ import java.util.List;
 
 public class BannerDemo {
 
-    public static void setup(BannerViewPager bannerViewPager, BannerIndicator bannerIndicator, Activity context) {
+    public static void setup(BannerViewPager bannerViewPager, BannerIndicator bannerIndicator) {
         BannerAdapter.BannerAdapterEvent bannerAdapterEvent = new BannerAdapter.BannerAdapterEvent() {
             @Override
             public void onItemClicked(int position) {
