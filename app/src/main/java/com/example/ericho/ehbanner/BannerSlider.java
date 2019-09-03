@@ -75,23 +75,19 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
             float scale = 1 - (positionOffset * RATIO_SCALE);
             scaleY(view, scale);
 
-            Log.d("Slider", "position " + position);
 
             if (position + 1 < bannerViewPager.getAdapter().getCount()) {
-                Log.d("Slider", "shrinking1 " + (position + 1));
                 view = bannerViewPager.findViewWithTag(position + 1);
                 scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
                 scaleY(view, scale);
             }
 
             if (position > 0) {
-                Log.d("Slider", "shrinking2 " + (position - 1));
                 view = bannerViewPager.findViewWithTag(position - 1);
                 scale = positionOffset * RATIO_SCALE + (1 - RATIO_SCALE);
                 scaleY(view, scale);
             }
         } catch (NullPointerException e) {
-            Log.d("Slider", e.getMessage());
             e.printStackTrace();
         }
     }

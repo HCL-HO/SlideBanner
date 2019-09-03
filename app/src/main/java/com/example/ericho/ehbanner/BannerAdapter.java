@@ -48,6 +48,8 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
 //    }
 
     private int getRealPosition(int position) {
+        Log.d("refresh", " position- " + position);
+        Log.d("refresh", " size- " + size);
         return position % size;
     }
 
@@ -64,7 +66,6 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
     }
 
     private void setupView(View view, final int position) {
-        Log.d("Slider", "scaling " + position);
         view.setScaleY(1 - scaleY);
         view.setTag(position);
         view.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +84,11 @@ public class BannerAdapter extends PagerAdapter implements BannerAdapterInteract
     @Override
     public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 
 

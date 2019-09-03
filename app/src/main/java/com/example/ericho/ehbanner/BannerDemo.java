@@ -3,6 +3,7 @@ package com.example.ericho.ehbanner;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -21,11 +22,12 @@ public class BannerDemo {
 
             @Override
             public View getView(Context context, int count) {
+                Log.d("getview", "count - " + count);
                 return getTextView(context, count);
             }
         };
         BannerSlider bannerSlider = new BannerSlider(2000, 0.4f, true);
-        bannerViewPager.setBannerComponent(bannerAdapterEvent, bannerIndicator, 5);
+        bannerViewPager.setBannerComponent(bannerAdapterEvent, bannerIndicator);
         bannerViewPager.setBannerSlider(bannerSlider);
     }
 

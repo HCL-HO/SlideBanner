@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 
 public class BannerViewPager extends ViewPager {
     private BannerAdapter bannerAdapter;
@@ -46,11 +47,11 @@ public class BannerViewPager extends ViewPager {
 
     public void refresh(int numOfItems) {
         clearOnPageChangeListeners();
-        removeAllViews();
-        setAdapter(bannerAdapter);
         bannerIndicator.removeAllViews();
         bannerIndicator.setupWithViewPager(this, numOfItems);
         bannerAdapter = new BannerAdapter(bannerAdapterEvent, numOfItems);
+        setAdapter(bannerAdapter);
+        bannerAdapter.notifyDataSetChanged();
         setBannerSlider(bannerSlider);
     }
 }
