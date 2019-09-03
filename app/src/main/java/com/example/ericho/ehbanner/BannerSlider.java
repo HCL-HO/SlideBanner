@@ -39,7 +39,6 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
 
 
     public BannerSlider(long speed, float sideRatio, boolean auto) {
-//        this.bannerViewPager = viewPager;
         this.speed = speed;
         this.RATIO_SCALE = sideRatio;
         this.auto = auto;
@@ -132,4 +131,5 @@ public class BannerSlider implements ViewPager.OnPageChangeListener, ViewPager.P
         stopLoop();
         handler.postDelayed(runnable, speed);
     }
+
 }

@@ -52,6 +52,7 @@ public class BannerViewPager extends ViewPager {
         bannerAdapter = new BannerAdapter(bannerAdapterEvent, numOfItems);
         setAdapter(bannerAdapter);
         bannerAdapter.notifyDataSetChanged();
+        bannerSlider.stopLoop();
         setBannerSlider(bannerSlider);
     }
 }
